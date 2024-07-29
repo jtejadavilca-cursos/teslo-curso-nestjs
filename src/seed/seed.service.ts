@@ -38,7 +38,7 @@ export class SeedService {
       totalData.push(subSetProducts);
     }
 
-    Promise.all(promisses).then(() => {
+    await Promise.all(promisses).then(() => {
       console.log('Data inserted');
     });
 
