@@ -131,6 +131,10 @@ export class ProductsService {
     return prod;
   }
 
+  async deleteAll() {
+    await this.productRepository.delete({});
+  }
+
 
   private handleDBExceptions(error: any) {
     console.log('error', error);
