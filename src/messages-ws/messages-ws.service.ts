@@ -31,6 +31,8 @@ export class MessagesWsService {
             throw new Error('User is not active');
         }
 
+        this.checkUserConnection(userId);
+
         this.connectedClients[client.id] = {
             socket: client,
             user,
