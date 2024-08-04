@@ -14,10 +14,10 @@
 docker compose up -d
 ```
 
-6. Ejecutar SEED (**forceInsert=true** si se quiere sobreescribir la data)
+6. Levantar en modo de desarrollo: ```yarn start:dev```
+
+7. Ejecutar SEED (**forceInsert=true** si se quiere sobreescribir la data)
 ```
 GET http://localhost:3000/api/seed?forceInsert=true
 ```
-
-7. Levantar en modo de desarrollo: ```yarn start:dev```
 
