@@ -6,7 +6,9 @@ export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
   @Get()
-  executeSeed(@Query('forceInsert') forceInsert: boolean) {
+  executeSeed(
+    @Query('forceInsert') forceInsert: boolean,
+  ) {
     return this.seedService.executeSeed(forceInsert);
   }
 

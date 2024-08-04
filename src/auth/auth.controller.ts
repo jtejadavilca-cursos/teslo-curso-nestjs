@@ -7,6 +7,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './decorators/get-user.decorator';
 import { RawHeaders } from './decorators/raw-headers.decorator';
 import { UseRoleGuard } from './guards/use-role/use-role.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces';
+import { Auth } from './decorators';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +25,16 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @Get('check-status')
+  @Auth()
+  checkAuthStatus(
+    @GetUser() user,
+  ) {
+
+    return this.authService.checkAuthStatus(user);
+
+  }
+
   @Get('private')
   @SetMetadata('roles', ['admin'])
   @UseGuards(AuthGuard(), UseRoleGuard)
@@ -30,6 +43,7 @@ export class AuthController {
     @GetUser('email') userEmail,
     @RawHeaders() headers,
   ) {
+    console.log('getPrivate1');
 
     return {
       ok: true,
@@ -39,10 +53,24 @@ export class AuthController {
   }
 
   @Get('private2')
-  @SetMetadata('roles', ['admin', 'user'])
+  //@SetMetadata('roles', ['admin', 'superUser'])
+  @RoleProtected(ValidRoles.admin)
   @UseGuards(AuthGuard(), UseRoleGuard)
   getPrivate2(
   ) {
+    console.log('getPrivate2');
+
+    return {
+      ok: true,
+      message: 'This is a private route',
+    };
+  }
+
+  @Get('private3')
+  @Auth(ValidRoles.admin)
+  getPrivate3(
+  ) {
+    console.log('getPrivate3');
 
     return {
       ok: true,

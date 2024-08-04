@@ -1,5 +1,6 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProductImage } from './product-image.entity';
+import { User } from '../../auth/entities/user.entity';
 
 @Entity('products')
 export class Product {
@@ -40,9 +41,16 @@ export class Product {
     @OneToMany(
         () => ProductImage,
         productImage => productImage.product,
-        { cascade: true, eager: true },
+        { eager: true },
     )
     images?: ProductImage[];
+
+    @ManyToOne(
+        () => User,
+        (user) => user.products,
+        { eager:true }
+    )
+    user: User;
 
     @BeforeInsert()
     checkSlugInsert() {
@@ -55,8 +63,6 @@ export class Product {
     }
 
     sanitizeSlug() {
-        console.log('Sanitizing slug');
-        console.log('this.slug', this.slug);
         const slugValue = this.slug ? this.slug : this.title;
         this.slug = slugValue
             .toLowerCase()
